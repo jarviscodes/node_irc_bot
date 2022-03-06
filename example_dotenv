@@ -1,0 +1,7 @@
+IRC_HOST=irc.yourserver.com
+IRC_PORT=6697
+IRC_USE_SSL=true
+BOT_USERNAMES='["Bot","Bot_", "B0t", "Bt0"]'
+BOT_DEV_CHANNELS='["#general", "#bots"]'
+BOT_NICKNAME=Bot
+
