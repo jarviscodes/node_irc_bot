@@ -50,9 +50,11 @@ class IRCBot {
         const dir = fs.opendirSync('./plugins')
         let dirent
         while ((dirent = dir.readSync()) !== null) {
-            const dynimp = await import('./plugins/' + dirent.name);
-            this.plugins[dynimp.plugin.command] = dynimp.plugin.exec;
-            console.log(`[${this.nickname.yellow}] Loaded plugin ${dirent.name.cyan} with command ${dynimp.plugin.command.red}`);
+            if (dirent.name.endsWith(".js")){
+                const dynimp = await import('./plugins/' + dirent.name);
+                this.plugins[dynimp.plugin.command] = dynimp.plugin.exec;
+                console.log(`[${this.nickname.yellow}] Loaded plugin ${dirent.name.cyan} with command ${dynimp.plugin.command.red}`);
+            }
         }
         dir.closeSync()
     }
@@ -104,6 +106,11 @@ class IRCBot {
             case "PRIVMSG":
                 let channel = rest.shift();
                 let message = rest.join(' ');
+
+                // Drop the \r\n at the end.
+                message = message.trim();
+
+                // Drop the : before the message
                 message = message.substring(1);
                 if (message.startsWith("!")){
                     let split_message = message.split(" ");
@@ -112,7 +119,6 @@ class IRCBot {
                         channel,
                         rest: split_message
                     }
-                    chat_command = chat_command.trim();
                     this.pluginHandler(chat_command, args);
                 }
                 break;
