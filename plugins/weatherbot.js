@@ -7,7 +7,6 @@ export let plugin = {
         dotenv.config( {path: './plugins/.env'});
         const owm_api_key = process.env.OWM_API_KEY;
         const location = args.rest.shift();
-
         if (!location){
             bot_obj.sendChatMessage("Usage: !weather [location]", args.channel);
         }else{
